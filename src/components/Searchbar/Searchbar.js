@@ -1,4 +1,6 @@
 import { Component } from "react";
+import {toast} from 'react-hot-toast';
+
 
 export class Searchbar extends Component{
   state={
@@ -11,8 +13,10 @@ export class Searchbar extends Component{
 
   handleSabmit=(e)=>{
     e.preventDefault()
-    if(this.state.value) {}
-    this.props.onSearch(this.state.value)
+    if(!this.state.value.trim()) {
+      return toast.error('Please enter your search query');
+    }
+    this.props.onSearch(this.state.value.trim())
     this.setState({value: ''})
   }
 
