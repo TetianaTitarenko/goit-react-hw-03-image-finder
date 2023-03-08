@@ -7,18 +7,20 @@ import { ErrorMessage } from "components/ErrorMessage/ErrorMessage"
 import { BadRequest } from "components/BadRequest/BadRequest"
 import { Loader} from "components/Loader/Loader"
 import { WaitWord } from "components/WaitWord/WaitWord"
+import { Button } from "components/Button/Button"
 
 export class ImageGallery extends Component {
 state={
-    imgs: null,
+    imgs: [],
     error: null,
-    status: 'idle'
+    status: 'idle',
+    page: 1,
 }
 
 componentDidUpdate(prevProps, prevState) {
-    if(prevProps.value !== this.props.value){
+    if(prevProps.value !== this.props.value || prevState.page !== this.state.page){
         this.setState({status: 'pending'})
-        getImg(this.props.value)
+        getImg(this.props.value, this.state.page)
         .then(response => {
             if (response.ok) {
             return response.json()}
@@ -27,9 +29,14 @@ componentDidUpdate(prevProps, prevState) {
             )})
         .then(imgs => {  
             if(imgs.hits.length === 0) {return this.setState({status: 'wrong'})}
-            return this.setState({imgs, status: 'resolved'})})
+            return this.setState({imgs: [...this.state.imgs, ...imgs.hits], status: 'resolved'})
+        })
         .catch(error => this.setState({error, status: 'rejected'}))
     }
+    }
+
+    handleLoad = () => {
+        this.setState((prev)=>({page:prev.page +1}))
     }
 
     render() {
@@ -43,5 +50,8 @@ componentDidUpdate(prevProps, prevState) {
 
         if (status === 'wrong' ) return <BadRequest />
 
-        if (status === 'resolved' ) return <ImageGalleryItem imgs={imgs.hits}/>
+        if (status === 'resolved' ) return (<>
+        <ImageGalleryItem imgs={imgs}/>
+        <Button onClick={this.handleLoad} />
+        </>)
 }}
