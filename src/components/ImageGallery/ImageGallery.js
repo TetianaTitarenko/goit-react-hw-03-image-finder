@@ -1,10 +1,11 @@
 import { Component } from "react"
+
 import { getImg } from "components/Search/Search"
 // import bootstrap from 'bootstrap'
 import { ImageGalleryItem } from "components/ImageGalleryItem/ImageGalleryItem"
 import { ErrorMessage } from "components/ErrorMessage/ErrorMessage"
 import { BadRequest } from "components/BadRequest/BadRequest"
-import { Loader } from "components/Loader/Loader"
+import { Loader} from "components/Loader/Loader"
 import { WaitWord } from "components/WaitWord/WaitWord"
 
 export class ImageGallery extends Component {
