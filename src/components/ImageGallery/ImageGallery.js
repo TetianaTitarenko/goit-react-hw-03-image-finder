@@ -1,25 +1,25 @@
 import { Component } from "react"
 
 import { getImg } from "components/Search/Search"
-// import bootstrap from 'bootstrap'
 import { ImageGalleryItem } from "components/ImageGalleryItem/ImageGalleryItem"
 import { ErrorMessage } from "components/ErrorMessage/ErrorMessage"
 import { BadRequest } from "components/BadRequest/BadRequest"
 import { Loader} from "components/Loader/Loader"
 import { WaitWord } from "components/WaitWord/WaitWord"
 import { Button } from "components/Button/Button"
+import { Modal } from "components/Modal/Modal";
 
 export class ImageGallery extends Component {
 state={
-    imgs: [],
+    hits: [],
     error: null,
     status: 'idle',
     page: 1,
+    showModal: false
 }
 
 componentDidUpdate(prevProps, prevState) {
-    if(prevProps.value !== this.props.value){
-        // || prevState.page !== this.state.page
+    if(prevProps.value !== this.props.value || prevState.page !== this.state.page){
         this.setState({status: 'pending'})
         getImg(this.props.value, this.state.page)
         .then(response => {
@@ -29,21 +29,29 @@ componentDidUpdate(prevProps, prevState) {
                 new Error('Try again'),
             )})
         .then(imgs => {  
+            console.log(imgs.hits)
             if(imgs.hits.length === 0) {return this.setState({status: 'wrong'})}
-            return this.setState({imgs, status: 'resolved'})
-            // return this.setState({imgs: [...this.state.imgs, ...imgs.hits], status: 'resolved'})
+            // return this.setState({hits: [imgs.hits], status: 'resolved'})
+            return this.setState({hits: [...this.state.hits, ...imgs.hits], status: 'resolved'})
         })
         .catch(error => this.setState({error, status: 'rejected'}))
     }
     }
 
     handleLoad = () => {
-        this.setState((prev)=>({page:prev.page +1}))
+        this.setState((prev)=>({page: prev.page +1}))
+    }
+    toggleModal = () => {
+        // console.log('click img')
+        this.setState(state => ({showModal: !state.showModal}))
+    }
+    onBigImg = bigImg =>{
+        console.log(bigImg)
     }
 
     render() {
-        const {error, imgs, status} = this.state
-
+        const {error, hits, status} = this.state
+        
         if (status === 'idle' ) return <WaitWord />
 
         if (status === 'pending' ) return <Loader />
@@ -53,7 +61,14 @@ componentDidUpdate(prevProps, prevState) {
         if (status === 'wrong' ) return <BadRequest />
 
         if (status === 'resolved' ) return (<>
-        <ImageGalleryItem imgs={imgs.hits}/>
+        <ImageGalleryItem imgs={hits} onClick={this.toggleModal}>
+
+          {this.state.showModal && (<Modal onBigImg={this.onBigImg} onClose={this.toggleModal}>
+        <button type="button" onClick={this.toggleModal}>
+          close
+        </button>
+        </Modal>)}
+        </ImageGalleryItem>
         <Button onClick={this.handleLoad} />
         </>)
 }}
