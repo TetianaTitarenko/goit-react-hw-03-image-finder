@@ -18,7 +18,8 @@ state={
 }
 
 componentDidUpdate(prevProps, prevState) {
-    if(prevProps.value !== this.props.value || prevState.page !== this.state.page){
+    if(prevProps.value !== this.props.value){
+        // || prevState.page !== this.state.page
         this.setState({status: 'pending'})
         getImg(this.props.value, this.state.page)
         .then(response => {
@@ -29,7 +30,8 @@ componentDidUpdate(prevProps, prevState) {
             )})
         .then(imgs => {  
             if(imgs.hits.length === 0) {return this.setState({status: 'wrong'})}
-            return this.setState({imgs: [...this.state.imgs, ...imgs.hits], status: 'resolved'})
+            return this.setState({imgs, status: 'resolved'})
+            // return this.setState({imgs: [...this.state.imgs, ...imgs.hits], status: 'resolved'})
         })
         .catch(error => this.setState({error, status: 'rejected'}))
     }
@@ -51,7 +53,7 @@ componentDidUpdate(prevProps, prevState) {
         if (status === 'wrong' ) return <BadRequest />
 
         if (status === 'resolved' ) return (<>
-        <ImageGalleryItem imgs={imgs}/>
+        <ImageGalleryItem imgs={imgs.hits}/>
         <Button onClick={this.handleLoad} />
         </>)
 }}
