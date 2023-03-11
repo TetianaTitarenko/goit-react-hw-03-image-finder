@@ -1,5 +1,6 @@
 import { Component } from "react";
-import {toast} from 'react-hot-toast';
+import {FcSearch} from 'react-icons/fc'
+import toast from 'react-hot-toast';
 import css from "components/Searchbar/Searchbar.module.css"
 
 
@@ -28,13 +29,12 @@ export class Searchbar extends Component{
     <input
       className={css.SearchFormInput}
       type="text"
-      // autocomplete="off"
-      // autofocus
       placeholder="Search images and photos"
       value={this.state.value}
       onChange={this.handleChange}
     />
     <button type="submit" className={css.SearchFormButton}>
+    <FcSearch className={css.SearchFormButtonLabe2}/>
       <span className={css.SearchFormButtonLabel}>Search</span>
     </button>
   </form>

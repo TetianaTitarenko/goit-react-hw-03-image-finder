@@ -63,6 +63,11 @@
     clip-path: inset(50%);
     border: 0;
   }
+
+  .SearchFormButtonLabe2 {
+    width: 25px;
+    height: 25px;
+  }
   
   .SearchFormInput {
     display: inline-block;
