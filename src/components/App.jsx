@@ -4,6 +4,7 @@ import { Searchbar } from "./Searchbar/Searchbar";
 import { ImageGallery } from "./ImageGallery/ImageGallery";
 import { getImg } from "components/Search/Search"
 import { Loader } from "./Loader/Loader";
+import PropTypes from "prop-types";
 
 
 export class App extends Component {
@@ -66,4 +67,11 @@ export class App extends Component {
       </div>
     );
   }
+}
+
+App.propTypes = {
+  textSearch: PropTypes.string,
+  page: PropTypes.number,
+  hits: PropTypes.array,
+  loading: PropTypes.bool,
 }

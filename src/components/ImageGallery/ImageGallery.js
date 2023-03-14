@@ -1,5 +1,5 @@
 import { Component } from "react"
-
+import PropTypes from "prop-types";
 
 import { ImageGalleryItem } from "components/ImageGalleryItem/ImageGalleryItem"
 import { Button } from "components/Button/Button"
@@ -35,4 +35,9 @@ export class ImageGallery extends Component {
         </>
       );
     }
+  }
+
+ImageGallery.propTypes = {
+    showModal: PropTypes.bool,
+    largeImageUrl: PropTypes.string,
   }

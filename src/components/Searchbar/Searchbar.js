@@ -2,6 +2,7 @@ import { Component } from "react";
 import {FcSearch} from 'react-icons/fc'
 import toast from 'react-hot-toast';
 import css from "components/Searchbar/Searchbar.module.css"
+import PropTypes from "prop-types";
 
 
 export class Searchbar extends Component{
@@ -40,4 +41,8 @@ export class Searchbar extends Component{
   </form>
 </header>)
 }
+}
+
+Searchbar.propTypes = {
+  value: PropTypes.string,
 }
